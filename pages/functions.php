@@ -61,7 +61,10 @@ function login ($log, $pass) {
             
             if($res['role_id'] == 1) {
                 $_SESSION['admin'] = $res['login'];
-            }           
+            }
+            else {
+                unset($_SESSION['admin']);
+            }          
             return true;    
 
         }

@@ -259,4 +259,62 @@
 
         ?>
     </div>
+
+    <div class="col-md-6 col-12">
+        <?php
+        $ins = 'SELECT comments.comment, users.login, hotels.hotel, comments.id FROM comments, users, hotels
+        WHERE comments.users_id = users.id AND comments.hotel_id = hotels.id';
+        $res = mysqli_query($link, $ins);        
+        ?>
+        <form action ='index.php?page=4' method = 'POST'>
+            <table class = 'table table-striped my-5'>
+                <thead>
+                    <tr>
+                        <td>Отель</td>
+                        <td>Комментарий</td>
+                        <td>Пользователь</td>                                    
+                    </tr>
+                </thead>
+                <thbody>
+                    <?php while($row = mysqli_fetch_array($res)):?>
+                        
+                        <tr>
+                            <td><?php echo $row[2]?></td>
+                            <td><?php echo $row[0]?></td>
+                            <td><?php echo $row[1]?></td>
+                            <td>
+                            <input type = 'checkbox' name = "<?php echo "ci". $row[3]?>">
+                        </td>
+                            
+                        </tr>
+                    <?php endwhile; mysqli_free_result($res);?>
+
+                </thbody>
+            </table>
+
+            <div class="form-group">
+                <button type="submit" name='del_comments' class='btn btn-danger'>Удалить</button>
+            </div>        
+
+        </form>
+        <?php       
+        
+        if(isset($_POST['del_comments']))
+        {
+            foreach($_POST as $key=>$value)
+            {
+                if(substr($key,0,2) == "ci") {
+                    $infoId = substr($key,2);                    
+                    $del = 'DELETE FROM comments WHERE id='.$infoId;
+                    mysqli_query($link, $del);
+
+                }
+            }
+
+            echo'<script>window.location=document.URL</script>';
+        }
+        
+        ?>
+
+    </div>
 </div>
