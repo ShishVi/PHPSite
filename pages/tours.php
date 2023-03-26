@@ -1,6 +1,6 @@
 <?php $link = connect(); ?>
 
-<h2 class='py-3'>Консоль администратора</h2>
+<h2 class='py-3'>Выбор отеля</h2>
 
 <form action="index.php?page=1" method = 'POST'>
     <div class = 'row'>        
@@ -66,13 +66,13 @@ if(isset($_POST['sel_city'])):
     <thbody>
         <?php while($row = mysqli_fetch_array($res)):?>
             
-            <tr>
+            <tr></tr>
                 <td><?php echo $row[1]?></td>
                 <td><?php echo $row[2]?></td>
                 <td><?php echo $row[3]?></td>
                 <td><?php echo $row[4]?></td>
                 <td><?php echo $row[5]?></td>
-                <td><a href ='<?php echo"pages/hotelinfo?hotel=".$row[0]?>'>Перейти</a></td>
+                <td><a href ='<?php echo"pages/hotelinfo.php?hotel=".$row[0]?>'>Перейти</a></td>
             </tr>
         <?php endwhile; mysqli_free_result($res);?>
 

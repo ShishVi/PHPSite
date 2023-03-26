@@ -1,3 +1,7 @@
+<?php if(!isset($_SESSION['admin'])) {
+    header("Location: ../index.php");
+    }?>
+
 <h2 class='py-3'>Консоль администратора</h2>
 
 <div class="row">

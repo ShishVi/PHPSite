@@ -29,10 +29,54 @@ function registered ($login, $pass, $email)
     }
 
     $ins = 'INSERT INTO users(login, password, email, role_id) 
-    VALUES ("'.$login.'", "'.md5($pass).'", "'.$email.'", 2)';
+    VALUES ("'.$login.'", "'.password_hash($pass, PASSWORD_DEFAULT).'", "'.$email.'", 2)';
 
     mysqli_query(connect(), $ins);
     return true;
 }
 
+function login ($log, $pass) {
+
+    $log = trim(htmlspecialchars($log));
+    $password = trim(htmlspecialchars($pass));    
+    
+    if ($log== '' || $password =='') {
+        echo '<h4 class = "text-danger">Необходимо заполнить все поля!</h4>';
+        return false;
+    };
+    
+
+    $passhash = md5($password);
+
+    $sel = "SELECT * FROM users WHERE login = '$log' AND password ='$passhash'";
+    
+    $res = mysqli_query(connect(), $sel); 
+
+    if (mysqli_num_rows($res) > 0) {
+
+            $res = mysqli_fetch_assoc ($res);
+            $_SESSION['user'] = $res['login'];
+            $_SESSION['users_id'] = $res['id'];
+            
+            
+            if($res['role_id'] == 1) {
+                $_SESSION['admin'] = $res['login'];
+            }           
+            return true;    
+
+        }
+    else {
+        
+        return false;        
+    }      
+}
+
+function logout () {
+    unset($_SESSION['user']);
+    unset($_SESSION['users_id']);
+    if($_SESSION['admin']) {
+        unset($_SESSION['admin']);
+    }
+    header("Location: ../index.php");
+}
 ?>
